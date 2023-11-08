@@ -23,16 +23,12 @@ void ATC::control_traffic() {
 	int landed_planes = 0;
 	int i = 0;
 	for (int j = 0; j < numplanes; j++) {
-		//cout << " A destination: " << registered_planes[0].getdestination() << endl;
-		//cout << "A at SCE (in ATC) : " << registered_planes[0].getat_SCE() << endl;
 		if (i < numplanes) {
 			landed_planes += registered_planes[i][0].getat_SCE();
 			i++;
 		}
 	}
 
-	//cout << "num registered planes = " << size(registered_planes) << endl;
-	// cout << " num landed planes = " << landed_planes << endl;
 	if (landed_planes >= MAX_LANDED_PLANE_NUM) {
 		i = 0;
 		if (i < numplanes) {

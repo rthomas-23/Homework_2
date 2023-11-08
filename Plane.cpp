@@ -1,3 +1,4 @@
+#pragma once
 #include <map>
 #include <string>
 #include <random>
@@ -5,14 +6,6 @@
 #include "Plane.h"
 #include <iostream>
 using namespace std;
-
-//Plane::Plane() {
-//	//double wait_time = 0;
-//	//double pos, vel, distance, loiter_time;
-//	//bool at_SCE;
-//	//string origin, destination;
-//	//map <string, int> journeys;
-//}
 
 // Get functions
 double Plane::getpos() { return pos; };
@@ -38,8 +31,8 @@ Plane::Plane(string from, string to) {
 	journeys.insert(pair<string, int>("ORD", 640)); // state college to chicago ""
 	journeys.insert(pair<string, int>("EWR", 220)); // state college to newark
 
-	distance = journeys[destination]; // THIS IS PROBABLY WRONG AS ONLY WORKS FOR OUTBOUND JOUNRYS FROM SCE
-	pos = 0, vel = 0; wait_time = 0; loiter_time = 0; at_SCE = 0;
+	distance = journeys[destination]; 
+	pos = 0, vel = 0; wait_time = 0; loiter_time = 100; at_SCE = 0;
 };
 
 // Deconstructor
@@ -54,17 +47,17 @@ void Plane::operate(double dt) {
 		wait_time -= dt;
 		if (wait_time < 0) { wait_time = 0; } // incase of negative time
 	}
-	else if (pos < distance) { pos += vel * dt; at_SCE = 0;}
+	else if (pos < distance) { pos += vel * dt/3600; at_SCE = 0;}
 	else if (destination == "SCE") { 
 		at_SCE = 1;
-		time_on_ground();
+		wait_time = time_on_ground();
 		string a = origin;
 		string b = destination;
 		destination = a; // swap origin and destination
 		origin = b;
 		pos = 0.0;}
 	else {
-		time_on_ground();
+		wait_time = time_on_ground();
 		string a = origin;
 		string b = destination;
 		destination = a;
@@ -97,7 +90,6 @@ double Plane::draw_from_normal_dist(double mean, double std) {
 // Airliner
 Airliner::Airliner(string Airline, string from, string to) : Plane( from, to) { // constructor
 	this->Airline = Airline;
-	//Plane(from, to);
 };
 
 Airliner::~Airliner() {}; // deconstructor
@@ -115,7 +107,6 @@ double Airliner::time_on_ground() {
 
 // GeneralAviation
 GeneralAviation::GeneralAviation(string from, string to) : Plane(from, to) { // constructor
-	//Plane::Plane(from, to);
 }
 
 GeneralAviation::~GeneralAviation() {}; // deconstructor

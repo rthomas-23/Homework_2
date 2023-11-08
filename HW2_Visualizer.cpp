@@ -1,5 +1,6 @@
 #include "HW2_VISUALIZER.h"
 
+
 HW2_VIZ::HW2_VIZ ()
 {
   // returns zero on success else non-zero
